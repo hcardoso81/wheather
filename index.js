@@ -10,18 +10,29 @@ app.use(morgan('dev'));
 app.listen(3000);
 
 app.get('/weather/:lat/:lon', async (req, resp) => {
-    const lat = functions.isFloat(req.params.lat);
+    /*const lat = functions.isFloat(req.params.lat);
     const lon = functions.isFloat(req.params.lon);
     if (!lat || !lon) {
         resp.status(500).send('Params Incorrect');
         return;
+
+
+    }*/
+    const lat = req.params.lat;
+    const lon = req.params.lon;
+
+    const result = await functions.getWeatherJSON(lat, lon);
+    if (result.cod) {
+        resp.status(parseInt(result.cod)).send(result.message);
+        return;
     }
-    const result = await functions.getWeatherJSON();
-    resp.send("obtener servicio clima " + result);
+    resp.send(`La temperatura en ${result.city} es de ${result.temp} C. ${result.message}`);
 });
 
 
-app.get('/weather/RioCuarto', (req, resp) => {
-    resp.send("obtener servicio clima Rio Cuarto");
-
+app.get('/weather/RioCuarto', async (req, resp) => {
+    const lat = -33.124656;
+    const lon = -64.3518;
+    const result = await functions.getWeatherJSON(lat, lon);
+    resp.send(`La temperatura en ${result.city} es de ${result.temp} C. ${result.message}`);
 });
