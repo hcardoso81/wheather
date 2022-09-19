@@ -10,14 +10,6 @@ app.use(morgan('dev'));
 app.listen(3000);
 
 app.get('/weather/:lat/:lon', async (req, resp) => {
-    /*const lat = functions.isFloat(req.params.lat);
-    const lon = functions.isFloat(req.params.lon);
-    if (!lat || !lon) {
-        resp.status(500).send('Params Incorrect');
-        return;
-
-
-    }*/
     const lat = req.params.lat;
     const lon = req.params.lon;
 
